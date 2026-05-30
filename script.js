@@ -18,7 +18,7 @@ const DomElement = function () {
             }
             divClass.classList.add(`${className}`);
             divClass.textContent = "Привет, я новый созданный DIV-блок";
-            divClass.style.cssText = `height: ${this.height}; width: ${this.width}; background: ${this.bg}; fontSize: ${this.fontSize};`;
+            divClass.style.cssText = `height: ${this.height}; width: ${this.width}; background: ${this.bg}; font-size: ${this.fontSize};`;
             document.body.appendChild(divClass);
         } else if (selector[0] === "#") {
             let paragraphID = document.createElement("p");
@@ -28,16 +28,48 @@ const DomElement = function () {
             }
             paragraphID.id = `${idName}`;
             paragraphID.textContent = "Привет, я новый созданный параграф";
-            paragraphID.style.cssText = `height: ${this.height}; width: ${this.width}; background: ${this.bg}; fontSize: ${this.fontSize};`;
+            paragraphID.style.cssText = `height: ${this.height}; width: ${this.width}; background: ${this.bg}; font-size: ${this.fontSize};`;
             document.body.appendChild(paragraphID);
+        }
+
+        if (selector === "square") {
+            document.addEventListener("DOMContentLoaded", () => {
+                let squareCreate = document.createElement("div");
+                squareCreate.classList.add("square");
+                squareCreate.style.cssText = `height: 100px; width: 100px; background-color: orange; position: absolute;`;
+                document.body.appendChild(squareCreate);
+                let square = document.querySelector(".square");
+                let squareCompStyles = window.getComputedStyle(square);
+                let topComputedStyles = squareCompStyles.top;
+                let leftComputedStyles = squareCompStyles.left;
+                let sqTopPx = parseFloat(topComputedStyles);
+                let sqLeftPx = parseFloat(leftComputedStyles);
+                document.addEventListener("keydown", function (event) {
+                    square = document.querySelector(".square");
+                    if (event.key === "ArrowUp") {
+                        sqTopPx -= 10;
+                        square.style.top = `${parseFloat(sqTopPx)}px`;
+                    }
+                    if (event.key === "ArrowDown") {
+                        sqTopPx += 10;
+                        square.style.top = `${sqTopPx}px`;
+                    }
+                    if (event.key === "ArrowLeft") {
+                        sqLeftPx -= 10;
+                        square.style.left = `${sqLeftPx}px`;
+                    }
+                    if (event.key === "ArrowRight") {
+                        sqLeftPx += 10;
+                        square.style.left = `${sqLeftPx}px`;
+                    }
+                });
+            });
         }
     };
 };
 
-// Создать объект на основе класса DomElement
 const newObj = new DomElement();
-
-// Вызвать его метод, чтобы создать элемент на странице
 
 newObj.addElement(".div-class");
 newObj.addElement("#p-id");
+newObj.addElement("square");
